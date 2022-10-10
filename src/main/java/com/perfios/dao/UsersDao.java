@@ -15,8 +15,8 @@ public class UsersDao {
 	private String jdbcUsername = "root";
 	private String jdbcPassword = "password";
 
-	private static final String INSERT_USERS_SQL = "INSERT INTO users" + "  (name, email, country) VALUES "
-			+ " (?, ?, ?);";
+	private static final String INSERT_USERS_SQL = "INSERT INTO users" + "  (uname,balance,uemail,upan,upwd,umobile,uaddress) VALUES "
+			+ " (?, ?, ?,?,?,?,?);";
 
 	private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id =?";
 	private static final String SELECT_ALL_USERS = "select * from users";
@@ -42,44 +42,28 @@ public class UsersDao {
 		return connection;
 	}
 
-	public void insertUser(Users user) throws SQLException {
+	public int insertUser(Users user) throws SQLException {
 		System.out.println(INSERT_USERS_SQL);
 		// try-with-resource statement will auto close the connection.
+		int r=0;
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
 			preparedStatement.setString(1, user.getUname());
-			preparedStatement.setString(2, user.getEmail());
-			preparedStatement.setString(3, user.getPan());
+			preparedStatement.setDouble(2, user.getBalance());
+			preparedStatement.setString(3, user.getEmail());
+			preparedStatement.setString(4, user.getPan());
+			preparedStatement.setString(5, user.getPwd());
+			preparedStatement.setString(6,user.getMobile());
+			preparedStatement.setString(7, user.getAddress());
 			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
+			r=preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+		return r;
 	}
 
-	public Users selectUser(int id) {
-		Users user = null;
-		// Step 1: Establishing a Connection
-		try (Connection connection = getConnection();
-				// Step 2:Create a statement using connection object
-				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);) {
-			preparedStatement.setInt(1, id);
-			System.out.println(preparedStatement);
-			// Step 3: Execute the query or update query
-			ResultSet rs = preparedStatement.executeQuery();
-
-			// Step 4: Process the ResultSet object.
-			while (rs.next()) {
-				String name = rs.getString("name");
-				String email = rs.getString("email");
-				String country = rs.getString("country");
-				//user = new Users(id, name, email, country);
-			}
-		} catch (SQLException e) {
-			printSQLException(e);
-		}
-		return user;
-	}
+	
 
 	public List<Users> selectAllUsers() {
 

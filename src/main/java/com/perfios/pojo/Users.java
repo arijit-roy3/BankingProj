@@ -69,6 +69,9 @@ public class Users {
 		this.mobile = mobile;
 		this.address = address;
 	}
+	public Users() {
+		super();
+	}
 	
 	
 }

@@ -43,9 +43,10 @@ public class TransactionsDao {
 		return connection;
 	}
 	
-	public void insertTransaction(Transactions transaction) throws SQLException {
+	public int insertTransaction(Transactions transaction) throws SQLException {
 		System.out.println(INSERT_TRANSACTIONS_SQL);
 		// try-with-resource statement will auto close the connection.
+		int r=0;
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TRANSACTIONS_SQL)) {
 			preparedStatement.setInt(1, transaction.getFrom());
@@ -54,10 +55,11 @@ public class TransactionsDao {
 			preparedStatement.setDate(4, (Date) transaction.getDate());
 			preparedStatement.setString(5, transaction.getType());
 			System.out.println(preparedStatement);
-			preparedStatement.executeUpdate();
+			r=preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return r;
 	}
 	
 	public List<Transactions> selectAllTransactions() {
