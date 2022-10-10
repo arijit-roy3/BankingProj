@@ -37,31 +37,34 @@ public class LoanServlet extends HttpServlet {
 			request.setAttribute("status", "invalidTenure");
 			dispatcher=request.getRequestDispatcher("loan.jsp");
 			dispatcher.forward(request, response);
+			
 		}
 		
-		loan.setName(name);
-		loan.setCibilScore(cibilScore);
-		loan.setAge(age);
-		loan.setSalary(salary);
-		loan.setAmount(amount);
-		loan.setDesignation(designation);
-		loan.setCompany(company);
-		loan.setTenure(tenure);
-		loan.setStatus("pending");
-		
-		try {
-			int row=loandao.insertLoan(loan);
-			dispatcher=request.getRequestDispatcher("loan.jsp");
-			if(row>0) {
-				request.setAttribute("status", "success");
-				response.sendRedirect("index.jsp");
-			}else {
-				request.setAttribute("status", "failed");
-				dispatcher.forward(request, response);
+		else {
+			loan.setName(name);
+			loan.setCibilScore(cibilScore);
+			loan.setAge(age);
+			loan.setSalary(salary);
+			loan.setAmount(amount);
+			loan.setDesignation(designation);
+			loan.setCompany(company);
+			loan.setTenure(tenure);
+			loan.setStatus("pending");
+			
+			try {
+				int row=loandao.insertLoan(loan);
+				dispatcher=request.getRequestDispatcher("loan.jsp");
+				if(row>0) {
+					request.setAttribute("status", "success");
+					response.sendRedirect("index.jsp");
+				}else {
+					request.setAttribute("status", "failed");
+					dispatcher.forward(request, response);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
