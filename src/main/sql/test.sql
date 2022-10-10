@@ -1,0 +1,10 @@
+SELECT * FROM EazyBank.users;
+describe EazyBank.transactions;
+SELECT * FROM EazyBank.transactions;
+use EazyBank;
+create table Loan(lid int auto_increment not null, name varchar(50), cibilScore int ,age int, salary double ,amount double, designation varchar(50), company varchar(50), tenure int,status varchar(50));
+describe EazyBank.Loan;
+SELECT * FROM EazyBank.Loan;
+create table transactions(tid int auto_increment not null, account_from int not null,account_to int not null, amount double not null,tdate Date not null, ttype varchar(20));
+describe EazyBank.admin;
+create table admin(aid int auto_increment, aname varchar(20), apassword varchar(20));
